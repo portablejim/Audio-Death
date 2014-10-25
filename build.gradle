@@ -45,7 +45,12 @@ minecraft {
     version = config.minecraft_version + "-" + config.forge_version
 }
 
-version = "${config.minecraft_version}-${config.mod_version}"
+String buildNumber = "unknown"
+if(System.getenv("BUILD_NUMBER") != null) {
+    buildNumber = System.getenv("BUILD_NUMBER")
+}
+version = "${config.minecraft_version}_${config.mod_version}.${buildNumber}"
+
 
 processResources
 {
