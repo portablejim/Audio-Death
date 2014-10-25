@@ -2,23 +2,27 @@ package portablejim.audiodeath;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
+import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.audio.ISound;
-import net.minecraft.client.audio.PositionedSoundRecord;
-import net.minecraft.client.gui.GuiGameOver;
-import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
+import org.apache.logging.log4j.Logger;
+import portablejim.audiodeath.proxy.IProxy;
+
+import java.io.File;
+import java.io.FileOutputStream;
 
 @Mod(modid = AudioDeath.MODID)
 public class AudioDeath
 {
     public static final String MODID = "audiodeath";
 
-    private int audio = 0;
+    @SidedProxy(clientSide = "portablejim.audiodeath.proxy.ClientProxy", serverSide = "portablejim.audiodeath.proxy.ServerProxy")
+    public static IProxy proxy;
+    Logger modLogger;
+
     
     @SuppressWarnings("UnusedDeclaration")
     @EventHandler
@@ -27,22 +31,41 @@ public class AudioDeath
         if(event.getSide() == Side.CLIENT) {
             MinecraftForge.EVENT_BUS.register(this);
         }
+
+        modLogger = event.getModLog();
+
+        File additionalResourcesFolder = new File(proxy.getMinecraftDir(), "mods-resourcepacks");
+        File audioDeathFolder = new File(additionalResourcesFolder, MODID);
+        File soundsFolder = new File(audioDeathFolder, "sounds");
+        try {
+            if(!soundsFolder.exists()) {
+                //noinspection ResultOfMethodCallIgnored
+                soundsFolder.mkdirs();
+            }
+            if(event.getSide() == Side.CLIENT) {
+                String soundsJson = "{" +
+                        "{\n" +
+                        "  \"audiodeath.death\": {\n" +
+                        "    \"category\": \"record\",\n" +
+                        "    \"sounds\": [ \"deathSound\" ]\n" +
+                        "  }\n" +
+                        "}";
+                File soundsFile = new File(audioDeathFolder, "sounds.json");
+                if(!soundsFile.exists()) {
+                    FileOutputStream soundsFileStream = new FileOutputStream(soundsFile);
+                    soundsFileStream.write(soundsJson.getBytes("utf-8"));
+                    soundsFileStream.close();
+                }
+            }
+        }
+        catch (Exception e) {
+            event.getModLog().error("Error creating required files and directories!", e);
+        }
     }
 
     @SuppressWarnings("UnusedDeclaration")
     @SubscribeEvent
     public void deathScreen(GuiOpenEvent event) {
-        ResourceLocation deathSoundAudioResource = new ResourceLocation("audiodeath:audiodeath.death");
-        ISound deathSound = PositionedSoundRecord.func_147674_a(deathSoundAudioResource, 1.0F);
-        if(event.gui instanceof GuiGameOver) {
-            if(audio == 0) {
-                Minecraft.getMinecraft().getSoundHandler().playSound(deathSound);
-                audio = 1;
-            }
-        }
-        else {
-            Minecraft.getMinecraft().getSoundHandler().stopSound(deathSound);
-            audio = 0;
-        }
+        proxy.handleDeath(event);
     }
 }
