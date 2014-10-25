@@ -2,7 +2,7 @@
 {
   "modid": "audiodeath",
   "name": "Audio Death",
-  "description": "Playes a custom sound on death.\nPlace audio files named deathsound(i).ogg where (i) is a number between 1 and 9 in a resource pack under assets/audiodeath/sound/ and enable the resource pack.",
+  "description": "Playes a custom sound on death.\nPlace audio files named deathsound.ogg from\n\<minecraftDir\>/mods-resourcepacks/audiodeath/sounds/",
   "version": "${version}",
   "mcversion": "${mcversion}",
   "url": "",
@@ -11,6 +11,8 @@
   "credits": "",
   "logoFile": "",
   "screenshots": [],
-  "dependencies": []
+    "requiredMods": [ "Forge", "additionalresources" ],
+  "dependencies": [ "additionalresources" ],
+    "useDependencyInformation": "true"
 }
 ]
