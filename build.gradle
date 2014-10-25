@@ -14,6 +14,12 @@ buildscript {
         classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
+repositories {
+    maven {
+        name = "portablejim"
+        url = "http://maven.jamesmckay.id.au/"
+    }
+}
 
 apply plugin: 'forge'
 
@@ -30,6 +36,10 @@ configFile.withReader {
 version = config.modVersion
 group= "portablejim.audiodeath" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "audiodeath"
+
+dependencies {
+    runtime "portablejim.additionalresources:additionalresources:1.7.10_0.0.3.7:dev"
+}
 
 minecraft {
     version = config.minecraft_version + "-" + config.forge_version
