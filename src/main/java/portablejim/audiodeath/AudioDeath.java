@@ -21,7 +21,7 @@ public class AudioDeath
 
     @SidedProxy(clientSide = "portablejim.audiodeath.proxy.ClientProxy", serverSide = "portablejim.audiodeath.proxy.ServerProxy")
     public static IProxy proxy;
-    Logger modLogger;
+    public static Logger modLogger;
 
     
     @SuppressWarnings("UnusedDeclaration")
