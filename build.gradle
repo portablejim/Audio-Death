@@ -5,9 +5,13 @@ buildscript {
             name = "forge"
             url = "http://files.minecraftforge.net/maven"
         }
+        maven {
+            name = "sonatype"
+            url = "https://oss.sonatype.org/content/repositories/snapshots/"
+        }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
 
@@ -46,5 +50,44 @@ processResources
     // copy everything else, thats not the mcmod.info
     from(sourceSets.main.resources.srcDirs) {
         exclude 'mcmod.info'
+    }
+}
+
+task deobfJar(type: Jar) {
+    from sourceSets.main.output
+    classifier = 'dev'
+}
+
+build.dependsOn deobfJar
+
+artifacts {
+    archives deobfJar
+}
+
+configurations {
+    deployerJars
+}
+
+uploadArchives {
+    dependsOn 'reobf'
+
+    repositories {
+        if(project.hasProperty("pushMaven")) {
+            logger.info("Pushing to maven repo")
+
+            mavenDeployer {
+                configuration = configurations.deployerJars
+
+                repository(url: "file://localhost/home/public_html/maven.jamesmckay.id.au/htdocs/")
+
+                pom {
+                    groupId = project.group
+                    version = project.version
+                    artifactId = project.archivesBaseName
+                    packaging = 'jar'
+                    description 'Additional Resources Mod'
+                }
+            }
+        }
     }
 }
