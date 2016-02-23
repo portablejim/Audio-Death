@@ -11,6 +11,8 @@ Instructions
 Place the audio file (preferrably as ogg) in
 
     <minecraft dir>/mods-resourcepacks/audiodeath/sounds/
+    
+called "deathSound.ogg"
 
 Then
 
