@@ -43,7 +43,7 @@ public class AudioDeath
                 soundsFolder.mkdirs();
             }
             if(event.getSide() == Side.CLIENT) {
-                String soundsJson = "{" +
+                String soundsJson = "" +
                         "{\n" +
                         "  \"audiodeath.death\": {\n" +
                         "    \"category\": \"record\",\n" +
