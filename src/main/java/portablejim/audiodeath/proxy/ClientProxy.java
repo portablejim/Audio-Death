@@ -22,7 +22,7 @@ public class ClientProxy implements IProxy {
     public void handleDeath(GuiOpenEvent event) {
         //To change body of implemented methods use File | Settings | File Templates.
         ResourceLocation deathSoundAudioResource = new ResourceLocation("audiodeath:audiodeath.death");
-        ISound deathSound = PositionedSoundRecord.func_147674_a(deathSoundAudioResource, 1.0F);
+        ISound deathSound = PositionedSoundRecord.create(deathSoundAudioResource, 1.0F);
         if(event.gui instanceof GuiGameOver) {
             if(audio == 0) {
                 Minecraft.getMinecraft().getSoundHandler().playSound(deathSound);
