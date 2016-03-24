@@ -12,6 +12,12 @@ import java.io.File;
 @SuppressWarnings("UnusedDeclaration")
 public class ClientProxy implements IProxy {
     private static int audio = 0;
+    private ISound deathSound;
+
+    public ClientProxy() {
+        ResourceLocation deathSoundAudioResource = new ResourceLocation("audiodeath:audiodeath.death");
+        deathSound = PositionedSoundRecord.func_147673_a(deathSoundAudioResource);
+    }
 
     @Override
     public File getMinecraftDir() {
@@ -21,9 +27,7 @@ public class ClientProxy implements IProxy {
     @Override
     public void handleDeath(GuiOpenEvent event) {
         //To change body of implemented methods use File | Settings | File Templates.
-        ResourceLocation deathSoundAudioResource = new ResourceLocation("audiodeath:audiodeath.death");
-        ISound deathSound = PositionedSoundRecord.func_147674_a(deathSoundAudioResource, 1.0F);
-        if(event.gui instanceof GuiGameOver) {
+        if(event.gui instanceof GuiGameOver && Minecraft.getMinecraft().currentScreen == null && !Minecraft.getMinecraft().thePlayer.isDead) {
             if(audio == 0) {
                 Minecraft.getMinecraft().getSoundHandler().playSound(deathSound);
                 audio = 1;
