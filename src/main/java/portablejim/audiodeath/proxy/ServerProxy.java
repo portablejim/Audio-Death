@@ -2,6 +2,7 @@ package portablejim.audiodeath.proxy;
 
 import net.minecraft.server.MinecraftServer;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
 import portablejim.audiodeath.AudioDeath;
 
 import java.io.File;
@@ -9,7 +10,7 @@ import java.io.File;
 @SuppressWarnings("UnusedDeclaration")
 public class ServerProxy implements IProxy {
     public File getMinecraftDir() {
-        return MinecraftServer.getServer().getFile(".");
+        return null;
     }
 
     @Override
