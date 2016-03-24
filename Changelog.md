@@ -1,5 +1,5 @@
 
-0.5.1
+0.6.0
 -----
 Changes:
 * The audio should only play while on the game over screen.
