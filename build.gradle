@@ -43,8 +43,8 @@ configFile.withReader {
 }
 
 version = config.mod_version
-group= "portablejim.additionalresources" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
-archivesBaseName = "additionalresources"
+group= "portablejim.audiodeath" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
+archivesBaseName = "audiodeath"
 
 minecraft {
     version = config.minecraft_version + "-" + config.forge_version
@@ -74,7 +74,7 @@ task deobfJar(type: Jar) {
 
 jar {
     manifest {
-        attributes 'FMLCorePlugin': 'portablejim.additionalresources.Ar_CorePlugin'
+        attributes 'ModSide': 'CLIENT'
     }
 }
 
@@ -113,7 +113,7 @@ uploadArchives {
                     version = project.version
                     artifactId = project.archivesBaseName
                     packaging = 'jar'
-                    description 'VeinMiner Mod'
+                    description 'Audio Death mod'
                 }
             }
         }
@@ -125,12 +125,12 @@ curseforge {
     else apiKey = 0
     //debug = true
     project {
-        id = '225124'
+        id = '225125'
         changelog = new File('Changelog.md').getText('utf-8').split('\n-{3,8}|\n\n')[2]
         changelogType = 'text'
         releaseType = 'alpha' // Just a default
         mainArtifact (jar) {
-            displayName = "Additional Resources $config.mod_version [MC$config.compatible_versions; rev $depth]"
+            displayName = "Audio Death $config.mod_version [MC$config.compatible_versions; rev $depth]"
         }
 
         addArtifact deobfJar
@@ -144,7 +144,7 @@ task curseBeta(dependsOn: tasks.curseforge) {}
 task curseRelease(dependsOn: tasks.curseforge) {}
 
 gradle.taskGraph.whenReady { taskGraph ->
-    curseforge.curseProjects.each { it.mainArtifact.displayName = "Additional Resources $config.mod_version [MC$config.compatible_versions; rev $ext.depth]" }
+    curseforge.curseProjects.each { it.mainArtifact.displayName = "Audio Death $config.mod_version [MC$config.compatible_versions; rev $ext.depth]" }
     if (taskGraph.hasTask(curseAlpha)) {
         curseforge.curseProjects.each { it.additionalArtifacts.each { it.releaseType = 'alpha' } }
         curseforge.curseProjects.each { it.releaseType = 'alpha' }
