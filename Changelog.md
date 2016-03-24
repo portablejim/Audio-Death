@@ -1,6 +1,7 @@
 
 0.6.0
 -----
+Port to 1.9
 Changes:
 * The audio should only play while on the game over screen.
 Fixes:
