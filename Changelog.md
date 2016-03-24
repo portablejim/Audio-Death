@@ -1,6 +1,8 @@
 
 0.5.1
 -----
+Changes:
+* The audio should only play while on the game over screen.
 Fixes:
 * Further fixes to sounds.json file.
 
