@@ -3,9 +3,16 @@ package portablejim.audiodeath.proxy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.ISound;
 import net.minecraft.client.audio.PositionedSoundRecord;
+import net.minecraft.client.audio.Sound;
+import net.minecraft.client.audio.SoundManager;
+import net.minecraft.client.audio.SoundRegistry;
+import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.GuiGameOver;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvent;
 import net.minecraftforge.client.event.GuiOpenEvent;
+import net.minecraftforge.fml.client.FMLClientHandler;
 
 import java.io.File;
 
@@ -16,7 +23,7 @@ public class ClientProxy implements IProxy {
 
     public ClientProxy() {
         ResourceLocation deathSoundAudioResource = new ResourceLocation("audiodeath:audiodeath.death");
-        deathSound = PositionedSoundRecord.create(deathSoundAudioResource);
+        deathSound = new PositionedSoundRecord(deathSoundAudioResource, SoundCategory.RECORDS, 1.0F, 1.0F, false, 0, ISound.AttenuationType.NONE, 0F, 0F, 0F);
     }
 
     @Override
