@@ -74,6 +74,12 @@ task deobfJar(type: Jar) {
     classifier = 'dev'
 }
 
+jar {
+    manifest {
+        attributes 'ModSide': 'CLIENT'
+    }
+}
+
 //noinspection GrUnresolvedAccess
 task release(type: Copy) {
     dependsOn "build"
@@ -109,7 +115,7 @@ uploadArchives {
                     version = project.version
                     artifactId = project.archivesBaseName
                     packaging = 'jar'
-                    description 'VeinMiner Mod'
+                    description 'Audio Death mod'
                 }
             }
         }

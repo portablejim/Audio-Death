@@ -47,7 +47,7 @@ public class AudioDeath
                         "{\n" +
                         "  \"audiodeath.death\": {\n" +
                         "    \"category\": \"record\",\n" +
-                        "    \"sounds\": [ \"deathSound\" ]\n" +
+                        "    \"sounds\": [ \"audiodeath:deathSound\" ]\n" +
                         "  }\n" +
                         "}";
                 File soundsFile = new File(audioDeathFolder, "sounds.json");
