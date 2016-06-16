@@ -1,4 +1,9 @@
 
+0.6.1
+-----
+Changes:
+* Allow loading in 1.9.4
+
 0.6.0
 -----
 Port to 1.9
