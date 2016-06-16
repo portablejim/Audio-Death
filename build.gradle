@@ -137,7 +137,10 @@ curseforge {
 
         addArtifact deobfJar
 
-        addGameVersion config.compatible_versions
+        //addGameVersion config.compatible_versions
+        for (String newVersion : config.compatible_versions.split(",")) {
+            addGameVersion newVersion
+        }
     }
 }
 
