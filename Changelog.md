@@ -1,4 +1,9 @@
 
+0.6.2
+------
+Changes:
+* Allow running in 1.10.
+
 0.6.1
 -----
 Changes:
