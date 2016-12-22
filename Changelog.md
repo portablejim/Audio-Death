@@ -1,3 +1,10 @@
+Changelog
+==========
+
+0.6.3
+------
+Changes:
+* Get working in 1.11 (and allow running in 1.11).
 
 0.6.2
 ------
