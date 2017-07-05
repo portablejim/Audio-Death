@@ -28,7 +28,7 @@ public class ClientProxy implements IProxy {
     @Override
     public void handleDeath(GuiOpenEvent event) {
         //To change body of implemented methods use File | Settings | File Templates.
-        if(event.getGui() instanceof GuiGameOver && Minecraft.getMinecraft().currentScreen == null && !Minecraft.getMinecraft().thePlayer.isDead) {
+        if(event.getGui() instanceof GuiGameOver && Minecraft.getMinecraft().currentScreen == null && !Minecraft.getMinecraft().player.isDead) {
             if(audio == 0) {
                 Minecraft.getMinecraft().getSoundHandler().playSound(deathSound);
                 audio = 1;

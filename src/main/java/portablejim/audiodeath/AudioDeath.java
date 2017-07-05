@@ -14,7 +14,7 @@ import portablejim.audiodeath.proxy.IProxy;
 import java.io.File;
 import java.io.FileOutputStream;
 
-@Mod(modid = AudioDeath.MODID, acceptedMinecraftVersions = "[1.9,1.10)")
+@Mod(modid = AudioDeath.MODID, acceptedMinecraftVersions = "[1.12,1.13)")
 public class AudioDeath
 {
     public static final String MODID = "audiodeath";
