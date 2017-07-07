@@ -11,7 +11,7 @@
         "credits": "",
         "logoFile": "",
         "screenshots": [],
-        "requiredMods": [ "Forge", "additionalresources" ],
+        "requiredMods": [ "additionalresources" ],
         "dependencies": [ "additionalresources" ],
         "useDependencyInformation": "true"
     }
