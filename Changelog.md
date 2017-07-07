@@ -1,6 +1,11 @@
 Changelog
 ==========
 
+0.6.4
+------
+Changes
+* Make compatible with 1.12
+
 0.6.3
 ------
 Changes:
