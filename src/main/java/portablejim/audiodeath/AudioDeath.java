@@ -1,5 +1,6 @@
 package portablejim.audiodeath;
 
+import com.google.common.io.Files;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.SidedProxy;
@@ -8,11 +9,18 @@ import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.Logger;
 import portablejim.audiodeath.proxy.IProxy;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 
 @Mod(modid = AudioDeath.MODID, acceptedMinecraftVersions = "[1.9,1.13)")
 public class AudioDeath
@@ -43,24 +51,30 @@ public class AudioDeath
                 soundsFolder.mkdirs();
             }
             if(event.getSide() == Side.CLIENT) {
-                String soundsJson = "" +
-                        "{\n" +
-                        "  \"audiodeath.death\": {\n" +
-                        "    \"category\": \"record\",\n" +
-                        "    \"sounds\": [ \"audiodeath:deathSound\" ]\n" +
-                        "  }\n" +
-                        "}";
                 File soundsFile = new File(audioDeathFolder, "sounds.json");
                 if(!soundsFile.exists()) {
-                    FileOutputStream soundsFileStream = new FileOutputStream(soundsFile);
-                    soundsFileStream.write(soundsJson.getBytes("utf-8"));
-                    soundsFileStream.close();
+                    AudioDeath.copyFileFromLocation(new File(audioDeathFolder, "sounds.json"), "/initial/sounds.json");
+                    AudioDeath.copyFileFromLocation(new File(soundsFolder, "death-gameover.ogg"), "/initial/sounds/death-gameover.ogg");
+                    AudioDeath.copyFileFromLocation(new File(soundsFolder, "death-haha.ogg"), "/initial/sounds/death-haha.ogg");
+                    AudioDeath.copyFileFromLocation(new File(soundsFolder, "death-no.ogg"), "/initial/sounds/death-no.ogg");
+                    AudioDeath.copyFileFromLocation(new File(soundsFolder, "death-seethatcoming.ogg"), "/initial/sounds/death-seethatcoming.ogg");
+                    AudioDeath.copyFileFromLocation(new File(soundsFolder, "death-youmessedup.ogg"), "/initial/sounds/death-youmessedup.ogg");
                 }
             }
         }
         catch (Exception e) {
             event.getModLog().error("Error creating required files and directories!", e);
         }
+    }
+
+    public static void copyFileFromLocation(File output, String inputLocation) throws IOException {
+        FileOutputStream outputStream = new FileOutputStream(output);
+        InputStream input = AudioDeath.class.getResourceAsStream(inputLocation);
+
+        IOUtils.copy(input, outputStream);
+
+        input.close();
+        outputStream.close();
     }
 
     @SuppressWarnings("UnusedDeclaration")

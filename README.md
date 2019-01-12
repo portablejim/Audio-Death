@@ -3,24 +3,27 @@ Audio Death
 
 Minecraft mod to play a audio file on death.
 
-Builds for 1.7: ![](http://jamesmckay.id.au:8080/job/AudioDeath/badge/icon)
-
 Instructions
 ------------
 
-Place the audio file (preferrably as ogg) in
+There should be audio already present.
+
+To customise place the audio file (preferrably as ogg) in
 
     <minecraft dir>/mods-resourcepacks/audiodeath/sounds/
     
-called "deathSound.ogg"
+and modify 
 
-Then
+    <minecraft dir>/mods-resourcepacks/audiodeath/sounds.json
 
-  * Start the game
+according to the name of the file.
 
-If the game is already running
+Then start the game. If the game is already running, go into resource packs and then back out again (this reloads textures)
+  
+To restore default sound files, delete
 
-  * Go into resource packs and then back out again (this reloads textures)
+    <minecraft dir>/mods-resourcepacks/
 
+and restart the game.
 
 Have fun.

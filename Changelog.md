@@ -1,6 +1,11 @@
 Changelog
 ==========
 
+0.7.0
+------
+Changes
+* Add sounds by the amazing Gooderness that are created by default.
+
 0.6.4
 ------
 Changes
