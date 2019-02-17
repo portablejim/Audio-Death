@@ -23,7 +23,7 @@ public class ClientProxy implements IProxy {
 
     @Override
     public File getMinecraftDir() {
-        return Minecraft.getInstance().gameDir;
+        return Minecraft.getInstance().getFileResourcePacks().getParentFile();
     }
 
     @Override
