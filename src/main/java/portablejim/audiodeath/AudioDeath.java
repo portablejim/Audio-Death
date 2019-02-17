@@ -1,38 +1,43 @@
 package portablejim.audiodeath;
 
+import net.minecraft.util.ResourceLocation;
+import net.minecraft.util.SoundEvent;
+import net.minecraftforge.client.ForgeClientHandler;
+import net.minecraftforge.event.RegistryEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.Mod.EventHandler;
-import net.minecraftforge.fml.common.SidedProxy;
-import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
-import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.relauncher.Side;
 import net.minecraftforge.client.event.GuiOpenEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
+import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import portablejim.audiodeath.proxy.ClientProxy;
 import portablejim.audiodeath.proxy.IProxy;
+import portablejim.audiodeath.proxy.ServerProxy;
 
 import java.io.File;
 import java.io.FileOutputStream;
 
-@Mod(modid = AudioDeath.MODID, acceptedMinecraftVersions = "[1.9,1.13)")
+@Mod(AudioDeath.MODID)
 public class AudioDeath
 {
     public static final String MODID = "audiodeath";
+    public static final Logger LOGGER = LogManager.getLogger();
+    public static SoundEvent deathSoundEvent;
 
-    @SidedProxy(clientSide = "portablejim.audiodeath.proxy.ClientProxy", serverSide = "portablejim.audiodeath.proxy.ServerProxy")
-    public static IProxy proxy;
-    public static Logger modLogger;
-
-    
-    @SuppressWarnings("UnusedDeclaration")
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event)
+    public AudioDeath()
     {
-        if(event.getSide() == Side.CLIENT) {
-            MinecraftForge.EVENT_BUS.register(this);
-        }
+        FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientInit);
+        MinecraftForge.EVENT_BUS.addListener(this::deathScreen);
+    }
 
-        modLogger = event.getModLog();
+    IProxy proxy;
+
+    public void clientInit(FMLClientSetupEvent event)
+    {
+        proxy = new ClientProxy();
 
         File additionalResourcesFolder = new File(proxy.getMinecraftDir(), "mods-resourcepacks");
         File audioDeathFolder = new File(additionalResourcesFolder, MODID);
@@ -42,30 +47,52 @@ public class AudioDeath
                 //noinspection ResultOfMethodCallIgnored
                 soundsFolder.mkdirs();
             }
-            if(event.getSide() == Side.CLIENT) {
-                String soundsJson = "" +
-                        "{\n" +
-                        "  \"audiodeath.death\": {\n" +
-                        "    \"category\": \"record\",\n" +
-                        "    \"sounds\": [ \"audiodeath:deathSound\" ]\n" +
-                        "  }\n" +
-                        "}";
-                File soundsFile = new File(audioDeathFolder, "sounds.json");
-                if(!soundsFile.exists()) {
-                    FileOutputStream soundsFileStream = new FileOutputStream(soundsFile);
-                    soundsFileStream.write(soundsJson.getBytes("utf-8"));
-                    soundsFileStream.close();
-                }
+
+            String soundsJson = "" +
+                    "{\n" +
+                    "  \"audiodeath.death\": {\n" +
+                    "    \"category\": \"record\",\n" +
+                    "    \"sounds\": [ \"audiodeath:deathSound\" ]\n" +
+                    "  }\n" +
+                    "}";
+            File soundsFile = new File(audioDeathFolder, "sounds.json");
+            if(!soundsFile.exists()) {
+                FileOutputStream soundsFileStream = new FileOutputStream(soundsFile);
+                soundsFileStream.write(soundsJson.getBytes("utf-8"));
+                soundsFileStream.close();
             }
         }
         catch (Exception e) {
-            event.getModLog().error("Error creating required files and directories!", e);
+            LOGGER.error("Error creating required files and directories!", e);
         }
+    }
+
+    public void serverInit(FMLDedicatedServerSetupEvent event)
+    {
+        proxy = new ServerProxy();
     }
 
     @SuppressWarnings("UnusedDeclaration")
     @SubscribeEvent
     public void deathScreen(GuiOpenEvent event) {
-        proxy.handleDeath(event);
+        if(proxy != null)
+        {
+            proxy.handleDeath(event);
+        }
+    }
+
+    // You can use EventBusSubscriber to automatically subscribe events on the contained class (this is subscribing to the MOD event bus
+    @Mod.EventBusSubscriber(bus=Mod.EventBusSubscriber.Bus.MOD)
+    public static class RegistryEvents {
+        @SubscribeEvent
+        public static void onBlocksRegistry(final RegistryEvent.Register<SoundEvent> soundEventRegistryEvent) {
+            // register a new block here
+            LOGGER.info("HELLO from Register Block");
+
+            ResourceLocation deathSoundAudioResource = new ResourceLocation("audiodeath", "audiodeath.death");
+            deathSoundEvent = new SoundEvent(deathSoundAudioResource);
+            deathSoundEvent.setRegistryName(deathSoundAudioResource);
+            soundEventRegistryEvent.getRegistry().register(deathSoundEvent);
+        }
     }
 }
