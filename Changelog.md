@@ -1,10 +1,16 @@
 Changelog
 ==========
 
+0.7.0
+------
+Changes
+* Add sounds by the amazing Gooderness that are created by default.
+* Port to 1.13.2
+
 0.6.4
 ------
 Changes
-* Port to 1.13.2
+* Make compatible with 1.12
 
 0.6.3
 ------

@@ -11,6 +11,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import org.apache.commons.io.IOUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import portablejim.audiodeath.proxy.ClientProxy;
@@ -19,6 +20,8 @@ import portablejim.audiodeath.proxy.ServerProxy;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 @Mod(AudioDeath.MODID)
 public class AudioDeath
@@ -48,18 +51,14 @@ public class AudioDeath
                 soundsFolder.mkdirs();
             }
 
-            String soundsJson = "" +
-                    "{\n" +
-                    "  \"audiodeath.death\": {\n" +
-                    "    \"category\": \"record\",\n" +
-                    "    \"sounds\": [ \"audiodeath:deathSound\" ]\n" +
-                    "  }\n" +
-                    "}";
             File soundsFile = new File(audioDeathFolder, "sounds.json");
             if(!soundsFile.exists()) {
-                FileOutputStream soundsFileStream = new FileOutputStream(soundsFile);
-                soundsFileStream.write(soundsJson.getBytes("utf-8"));
-                soundsFileStream.close();
+                AudioDeath.copyFileFromLocation(new File(audioDeathFolder, "sounds.json"), "/initial/sounds.json");
+                AudioDeath.copyFileFromLocation(new File(soundsFolder, "death-gameover.ogg"), "/initial/sounds/death-gameover.ogg");
+                AudioDeath.copyFileFromLocation(new File(soundsFolder, "death-haha.ogg"), "/initial/sounds/death-haha.ogg");
+                AudioDeath.copyFileFromLocation(new File(soundsFolder, "death-no.ogg"), "/initial/sounds/death-no.ogg");
+                AudioDeath.copyFileFromLocation(new File(soundsFolder, "death-seethatcoming.ogg"), "/initial/sounds/death-seethatcoming.ogg");
+                AudioDeath.copyFileFromLocation(new File(soundsFolder, "death-youmessedup.ogg"), "/initial/sounds/death-youmessedup.ogg");
             }
         }
         catch (Exception e) {
@@ -95,4 +94,15 @@ public class AudioDeath
             soundEventRegistryEvent.getRegistry().register(deathSoundEvent);
         }
     }
+
+    public static void copyFileFromLocation(File output, String inputLocation) throws IOException {
+        FileOutputStream outputStream = new FileOutputStream(output);
+        InputStream input = AudioDeath.class.getResourceAsStream(inputLocation);
+
+        IOUtils.copy(input, outputStream);
+
+        input.close();
+        outputStream.close();
+    }
+
 }

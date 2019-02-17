@@ -1,0 +1,6 @@
+{
+  "audiodeath.death": {
+    "category": "record",
+    "sounds": [ "audiodeath:death-gameover", "audiodeath:death-haha", "audiodeath:death-no", "audiodeath:death-seethatcoming", "audiodeath:death-youmessedup" ]
+  }
+}
