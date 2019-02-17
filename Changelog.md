@@ -4,7 +4,7 @@ Changelog
 0.6.4
 ------
 Changes
-* Make compatible with 1.12
+* Port to 1.13.2
 
 0.6.3
 ------
